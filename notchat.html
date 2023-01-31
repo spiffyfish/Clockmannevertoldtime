@@ -2,6 +2,9 @@
 <html>
   <head>
     <script>
+      // Variable to keep track of whether the API key has been invalidated
+      let apiKeyInvalidated = false;
+      
       // Function to get the API key from the user's input
       function getApiKey() {
         window.alert("Get your API key at https://platform.openai.com/account/api-keys");
@@ -26,8 +29,9 @@
 
         // Handle the request's successful completion
         xhr.onload = function() {
-          if (xhr.status !== 200) {
+          if (xhr.status !== 200 && !apiKeyInvalidated) {
             alert("Invalid API key, please enter a valid API key");
+            apiKeyInvalidated = true;
             apiKey = getApiKey();
             sendRequest(p);
             return;
