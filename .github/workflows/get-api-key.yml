@@ -1,18 +1,16 @@
-on:
-  push:
-    branches:
-      - main
+name: Export API Key
+
+on: [push]
+
+env:
+  API_KEY: ${{ secrets.API_KEY }}
 
 jobs:
-  build:
+  export:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Get API Key
-      id: api_key
-      run: echo "::set-env name=API_KEY::${{ secrets.API_KEY }}"
-
     - name: Export API Key
-      run: echo "API_KEY=${{ env.API_KEY }}"
       env:
-        API_KEY: ${{ steps.api_key.outputs.API_KEY }}
+        API_KEY: ${{ secrets.API_KEY }}
+      run: echo "API Key: $API_KEY"
