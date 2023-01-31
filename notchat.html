@@ -25,12 +25,13 @@
 
         // Handle the request's successful completion
         xhr.onload = function() {
-          if (xhr.status == 401) {
+          if (xhr.status !== 200) {
+            alert("Invalid API key, please enter a valid API key");
             apiKey = getApiKey();
             sendRequest(p);
             return;
           }
-          
+
           // Parse the response JSON
           const response = JSON.parse(xhr.responseText);
 
