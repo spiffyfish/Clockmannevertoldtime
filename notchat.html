@@ -3,15 +3,18 @@
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-      window.alert("How to get api key here. https://platform.openai.com/account/api-keys")
-      var Api = window.prompt("Api Key")
-      while (Api == ""){
-        var Api = window.prompt("Api Key")}
+      function getApiKey() {
+        window.alert("Get your API key at https://platform.openai.com/account/api-keys");
+        var apiKey = prompt("Enter your API key");
+        while (!apiKey) {
+          apiKey = prompt("Enter your API key");
+        }
+        return apiKey;
+      }
+      var apiKey = getApiKey();
       function sendRequest() {
         // get the user's question from the input box
         const question = $("#question").val();
-        // get the API key from the environment variable
-        const apiKey = Api
 
         // make the API request
         $.ajax({
@@ -19,7 +22,7 @@
           url: "https://api.openai.com/v1/engines/text-davinci/jobs",
           data: JSON.stringify({ prompt: question, max_tokens: 100, n: 1, temperature: 0.5 }),
           headers: {
-            "Authorization": Bearer apikey
+            "Authorization": "Bearer " + apiKey,
             "Content-Type": "application/json"
           },
           success: function (response) {
@@ -28,12 +31,16 @@
           }
         });
       }
+      function deleteResponse() {
+        $("#response").text("");
+      }
     </script>
   </head>
   <body>
     <h1>Chat with OpenAI</h1>
     <input type="text" id="question" size="50">
     <button onclick="sendRequest()">Send</button>
+    <button onclick="deleteResponse()">Delete Response</button>
     <br><br>
     <p><strong>Response:</strong></p>
     <pre id="response"></pre>
