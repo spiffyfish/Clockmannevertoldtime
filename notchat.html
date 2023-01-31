@@ -1,36 +1,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <style>
-      input[type="text"] {
-        padding: 10px;
-        font-size: 16px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        width: 60%;
-        box-sizing: border-box;
-        margin-bottom: 10px;
-      }
-
-      button {
-        padding: 10px 20px;
-        font-size: 16px;
-        border-radius: 5px;
-        background-color: #333;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-        margin-right: 10px;
-      }
-
-      pre {
-        background-color: #f2f2f2;
-        padding: 10px;
-        border-radius: 5px;
-        width: 60%;
-        white-space: pre-wrap;
-      }
-    </style>
     <script>
       function getApiKey() {
         window.alert("Get your API key at https://platform.openai.com/account/api-keys");
@@ -42,15 +12,12 @@
       }
       var apiKey = getApiKey();
 
-      function sendRequest() {
-        // Get the user's question from the input box
-        const question = document.getElementById("question").value;
-
+      function sendRequest(p) {
         // Create a new XMLHttpRequest object
         const xhr = new XMLHttpRequest();
 
         // Set the request method and URL
-        xhr.open("POST", "https://api.openai.com/v1/engines/text-davinci-002/jobs");
+        xhr.open("POST", "https://api.openai.com/v1/engines/text-davinci-003/jobs");
 
         // Set the request headers
         xhr.setRequestHeader("Authorization", "Bearer " + apiKey);
@@ -66,7 +33,7 @@
         };
 
         // Send the request
-        xhr.send(JSON.stringify({ prompt: question, max_tokens: 100, n: 1, temperature: 0.5 }));
+        xhr.send(JSON.stringify({ prompt: p + ":", temperature: 0.3, max_tokens: 500, top_p: 1.0, frequency_penalty: 0.0, presence_penalty: 0.0 }));
       }
 
       function deleteResponse() {
@@ -75,13 +42,12 @@
     </script>
   </head>
   <body>
-    <h1 style="text-align: center;">Chat with OpenAI</h1>
-    <div style="display: flex; justify-content: center; align-items: center;">
-      <input type="text" id="question" size="50">
-      <button onclick="sendRequest()">Send</button>
-      <button onclick="deleteResponse()">Delete Response</button>
-    </div>
+    <h1>Chat with OpenAI</h1>
+    <input type="text" id="question" size="50">
+    <button onclick="sendRequest(document.getElementById('question').value)">Send</button>
+    <button onclick="deleteResponse()">Delete Response</button>
     <br><br>
-    <div id="response" style="font-size: 14px; padding: 10px; background-color: #f1f1f1; border-radius: 5px;"></div>
+    <p><strong>Response:</strong></p>
+    <pre id="response"></pre>
   </body>
 </html>
