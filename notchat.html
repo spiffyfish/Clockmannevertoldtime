@@ -25,6 +25,12 @@
 
         // Handle the request's successful completion
         xhr.onload = function() {
+          if (xhr.status == 401) {
+            apiKey = getApiKey();
+            sendRequest(p);
+            return;
+          }
+          
           // Parse the response JSON
           const response = JSON.parse(xhr.responseText);
 
