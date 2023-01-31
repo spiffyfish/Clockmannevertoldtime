@@ -1,6 +1,36 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <style>
+      input[type="text"] {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        width: 60%;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+
+      pre {
+        background-color: #f2f2f2;
+        padding: 10px;
+        border-radius: 5px;
+        width: 60%;
+        white-space: pre-wrap;
+      }
+    </style>
     <script>
       function getApiKey() {
         window.alert("Get your API key at https://platform.openai.com/account/api-keys");
@@ -45,12 +75,13 @@
     </script>
   </head>
   <body>
-    <h1>Chat with OpenAI</h1>
-    <input type="text" id="question" size="50">
-    <button onclick="sendRequest()">Send</button>
-    <button onclick="deleteResponse()">Delete Response</button>
+    <h1 style="text-align: center;">Chat with OpenAI</h1>
+    <div style="display: flex; justify-content: center; align-items: center;">
+      <input type="text" id="question" size="50">
+      <button onclick="sendRequest()">Send</button>
+      <button onclick="deleteResponse()">Delete Response</button>
+    </div>
     <br><br>
-    <p><strong>Response:</strong></p>
-    <pre id="response"></pre>
+    <div id="response" style="font-size: 14px; padding: 10px; background-color: #f1f1f1; border-radius: 5px;"></div>
   </body>
 </html>
