@@ -8,7 +8,7 @@
         const question = $("#question").val();
 
         // get the API key from the environment variable
-        const apiKey = process.env.API_KEY;
+        const apiKey = "{{ API_KEY }}";
 
         // make the API request
         $.ajax({
