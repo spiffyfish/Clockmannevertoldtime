@@ -3,12 +3,12 @@
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+      window.alert("How to get api key here. https://platform.openai.com/account/api-keys")
       function sendRequest() {
         // get the user's question from the input box
         const question = $("#question").val();
-        window.prompt("How to get api key here. https://platform.openai.com/account/api-keys")
         // get the API key from the environment variable
-        const apiKey = window.prompt("API_KEY")
+        const apiKey = window.prompt("Api Key")
 
         // make the API request
         $.ajax({
