@@ -4,7 +4,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
       function getApiKey() {
-        window.alert("Get your API key at https://platform.openai.com/account/api-keys");
+        window.alert("Get your API key at https://beta.openai.com/signup");
         var apiKey = prompt("Enter your API key");
         while (!apiKey) {
           apiKey = prompt("Enter your API key");
@@ -19,7 +19,7 @@
         // make the API request
         $.ajax({
           type: "POST",
-          url: "https://api.openai.com/v1/engines/text-davinci/jobs",
+          url: "https://api.openai.com/v1/engines/davinci/jobs",
           data: JSON.stringify({ prompt: question, max_tokens: 100, n: 1, temperature: 0.5 }),
           headers: {
             "Authorization": "Bearer " + apiKey,
@@ -28,6 +28,10 @@
           success: function (response) {
             // display the response in the output box
             $("#response").text(response.choices[0].text);
+          },
+          error: function (error) {
+            console.log("Error:", error);
+            alert("An error occurred while making the request. Please check the console for more information.");
           }
         });
       }
@@ -46,4 +50,5 @@
     <pre id="response"></pre>
   </body>
 </html>
+
 
