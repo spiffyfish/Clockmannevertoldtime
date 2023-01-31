@@ -17,6 +17,7 @@
       var apiKey = getApiKey();
 
       function sendRequest(p) {
+        apiKeyInvalidated = false;
         // Create a new XMLHttpRequest object
         const xhr = new XMLHttpRequest();
 
