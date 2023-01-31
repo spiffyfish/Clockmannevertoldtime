@@ -2,11 +2,12 @@
 <html>
   <head>
     <script>
+      // Function to get the API key from the user's input
       function getApiKey() {
         window.alert("Get your API key at https://platform.openai.com/account/api-keys");
-        var apiKey = window.prompt("Enter your API key");
+        var apiKey = document.getElementById("apiKeyInput").value;
         while (!apiKey) {
-          apiKey = window.prompt("Enter your API key");
+          apiKey = document.getElementById("apiKeyInput").value;
         }
         return apiKey;
       }
@@ -51,6 +52,7 @@
   <body>
     <h1>Chat with OpenAI</h1>
     <input type="text" id="question" size="50">
+    <input type="text" id="apiKeyInput" size="50" placeholder="Enter your API key here">
     <button onclick="sendRequest(document.getElementById('question').value)">Send</button>
     <button onclick="deleteResponse()">Delete Response</button>
     <br><br>
