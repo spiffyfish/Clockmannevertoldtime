@@ -1,67 +1,67 @@
-<!DOCTYPE html>
 <html>
   <head>
     <script>
-      // Variable to keep track of whether the API key has been invalidated
-      let apiKeyInvalidated = false;
-      
-      // Function to get the API key from the user's input
-      function getApiKey() {
-        window.alert("Get your API key at https://platform.openai.com/account/api-keys");
-        var apiKey = document.getElementById("apiKeyInput").value;
-        while (!apiKey) {
-          apiKey = document.getElementById("apiKeyInput").value;
+      async function makeRequest() {
+        var apiKey = document.getElementById("apiKey").value;
+        var prompt = document.getElementById("prompt").value;
+        var response = await fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + apiKey
+          },
+          body: JSON.stringify({
+            prompt: prompt + ":",
+            max_tokens: 500,
+            temperature: 0.3,
+            top_p: 1.0,
+            frequency_penalty: 0.0,
+            presence_penalty: 0.0
+          })
+        });
+        var responseJson = await response.json();
+        document.getElementById("result").innerHTML = responseJson["choices"][0]["text"];
+      }
+
+      function clearResponse() {
+        document.getElementById("result").innerHTML = "";
+      }
+
+      function toggleDarkMode() {
+        var body = document.body;
+        if (body.classList.contains("dark-mode")) {
+          body.classList.remove("dark-mode");
+        } else {
+          body.classList.add("dark-mode");
         }
-        return apiKey;
-      }
-      var apiKey = getApiKey();
-
-      function sendRequest(p) {
-        apiKeyInvalidated = false;
-        // Create a new XMLHttpRequest object
-        const xhr = new XMLHttpRequest();
-
-        // Set the request method and URL
-        xhr.open("POST", "https://api.openai.com/v1/engines/text-davinci-003/completions");
-
-        // Set the request headers
-        xhr.setRequestHeader("Authorization", "Bearer " + apiKey);
-        xhr.setRequestHeader("Content-Type", "application/json");
-
-        // Handle the request's successful completion
-        xhr.onload = function() {
-          if (xhr.status !== 200 && !apiKeyInvalidated) {
-            alert("Invalid API key, please enter a valid API key");
-            apiKeyInvalidated = true;
-            apiKey = getApiKey();
-            sendRequest(p);
-            return;
-          }
-
-          // Parse the response JSON
-          const response = JSON.parse(xhr.responseText);
-
-          // Display the response in the output box
-          document.getElementById("response").textContent = response.choices[0].text;
-        };
-
-        // Send the request
-        xhr.send(JSON.stringify({ prompt: p + ":", temperature: 0.3, max_tokens: 500, top_p: 1.0, frequency_penalty: 0.0, presence_penalty: 0.0 }));
       }
 
-      function deleteResponse() {
-        document.getElementById("response").textContent = "";
+      function toggleApiKeyVisibility() {
+        var apiKeyInput = document.getElementById("apiKey");
+        if (apiKeyInput.type === "text") {
+          apiKeyInput.type = "password";
+        } else {
+          apiKeyInput.type = "text";
+        }
       }
     </script>
+    <style>
+      .dark-mode {
+        background-color: #333;
+        color: #fff;
+      }
+    </style>
   </head>
   <body>
-    <h1>Chat with OpenAI</h1>
-    <input type="text" id="question" size="50">
-    <input type="text" id="apiKeyInput" size="50" placeholder="Enter your API key here">
-    <button onclick="sendRequest(document.getElementById('question').value)">Send</button>
-    <button onclick="deleteResponse()">Delete Response</button>
-    <br><br>
-    <p><strong>Response:</strong></p>
-    <pre id="response"></pre>
+    <h1>Chat With AIO</h1>
+    <p>API Key:</p>
+    <input type="text" id="apiKey">
+    <button onclick="toggleApiKeyVisibility()">Toggle API Key Visibility</button>
+    <p>Prompt:</p>
+    <input type="text" id="prompt">
+    <button onclick="makeRequest()">Get Response</button>
+    <button onclick="clearResponse()">Clear Response</button>
+    <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+    <p id="result"></p>
   </body>
 </html>
