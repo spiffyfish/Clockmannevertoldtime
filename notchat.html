@@ -1,6 +1,72 @@
 <html>
   <head>
+    <style>
+      /* Add some basic styling */
+      body {
+        font-family: Arial, sans-serif;
+		background-color: #333;
+		color: #fff;
+		padding: 20px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+
+      .container {
+        background-color: #555;
+		padding: 20px;
+		border-radius: 10px;
+		box-shadow: 0 0 10px #333;
+		position: relative;
+      }
+
+      /* Add some styling for the prompt and result sections */
+      .prompt, .result {
+        background-color: #333
+		border: 1px solid #333;
+		color: #fff;
+		box-shadow: 2px 2px 4px #333;
+
+
+      }
+
+      /* Style the result section */
+      .result {
+        background-color: #333;
+		border: 1px solid #333;
+		color: #fff;
+		box-shadow: 2px 2px 4px #333;
+      }
+
+	  input[type="text"] {
+		background-color: #555;
+		border: 1px solid #333;
+		color: #fff;
+		box-shadow: 2px 2px 4px #333;
+	}
+    </style>
+  </head>
+  <body>
+    <h1>Chat With AI</h1>
+    <div class="container">
+      <p id="apiKeyText">API Key:</p>
+      <input type="text" id="apiKey">
+      <button id="confirmBtn" onclick="hideApiKey()">Confirm</button>
+      <p>Prompt:</p>
+      <input type="text" class="prompt" id="prompt">
+      <button onclick="makeRequest()">Get Response</button>
+      <p class="result" id="result"></p>
+    </div>
+
     <script>
+      function hideApiKey() {
+        document.getElementById("apiKeyText").style.display = "none";
+        document.getElementById("apiKey").style.display = "none";
+        document.getElementById("confirmBtn").style.display = "none";
+      }
+
       async function makeRequest() {
         var apiKey = document.getElementById("apiKey").value;
         var prompt = document.getElementById("prompt").value;
@@ -22,56 +88,7 @@
         var responseJson = await response.json();
         document.getElementById("result").innerHTML = responseJson["choices"][0]["text"];
       }
-
-      function clearResponse() {
-        document.getElementById("result").innerHTML = "";
-      }
-
-      function toggleDarkMode() {
-        var body = document.body;
-        if (body.classList.contains("dark-mode")) {
-          body.classList.remove("dark-mode");
-        } else {
-          body.classList.add("dark-mode");
-        }
-      }
-
-      function toggleApiKeyVisibility() {
-        var apiKeyInput = document.getElementById("apiKey");
-        if (apiKeyInput.type === "text") {
-          apiKeyInput.type = "password";
-        } else {
-          apiKeyInput.type = "text";
-        }
-      }
-
-      function confirmApiKeyVisibility() {
-        var apiKeyInput = document.getElementById("apiKey");
-        apiKeyInput.style.display = "none";
-        var toggleApiKeyButton = document.getElementById("toggleApiKeyVisibilityButton");
-        toggleApiKeyButton.style.display = "none";
-        var confirmApiKeyButton = document.getElementById("confirmApiKeyVisibilityButton");
-        confirmApiKeyButton.style.display = "none";
-      }
     </script>
-    <style>
-      .dark-mode {
-        background-color: #333;
-        color: #fff;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Chat With AIO</h1>
-    <p>API Key:</p>
-    <input type="text" id="apiKey">
-    <button id="toggleApiKeyVisibilityButton" onclick="toggleApiKeyVisibility()">Toggle API Key Visibility</button>
-    <button id="confirmApiKeyVisibilityButton" onclick="confirmApiKeyVisibility()">Confirm</button>
-    <p>Prompt:</p>
-    <input type="text" id="prompt">
-    <button onclick="makeRequest()">Get Response</button>
-    <button onclick="clearResponse()">Clear Response</button>
-    <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
-    <p id="result"></p>
   </body>
 </html>
+
