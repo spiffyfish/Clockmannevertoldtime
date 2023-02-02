@@ -11,7 +11,7 @@
 
       h1 {
         text-align: center;
-        margin-bottom: 50px;
+        margin-bottom: 35px;
       }
 
       .container {
@@ -28,8 +28,6 @@
 		border: 1px solid #333;
 		color: #fff;
 		box-shadow: 2px 2px 4px #333;
-
-
       }
 
       /* Style the result section */
@@ -39,26 +37,39 @@
 		color: #fff;
 		box-shadow: 2px 2px 4px #333;
       }
-
-	  input[type="text"] {
+	 
+	 input[type="apitxtbox"] {
 		background-color: #555;
 		border: 1px solid #333;
 		color: #fff;
 		box-shadow: 2px 2px 4px #333;
 	}
+
+	  input[type="promtptxtbox"] {
+		background-color: #555;
+		border: 1px solid #333;
+		color: #fff;
+		box-shadow: 2px 2px 4px #333;
+		width: 91%;
+	}
     </style>
   </head>
+  
+  
   <body>
     <h1>Chat With AI</h1>
     <div class="container">
       <p id="apiKeyText">API Key:</p>
-      <input type="text" id="apiKey">
+      <input type="apitxtbox" id="apiKey">
       <button id="confirmBtn" onclick="hideApiKey()">Confirm</button>
       <p>Prompt:</p>
-      <input type="text" class="prompt" id="prompt">
+      <input type="promtptxtbox" class="prompt" id="prompt">&nbsp;&nbsp;
       <button onclick="makeRequest()">Get Response</button>
       <p class="result" id="result"></p>
     </div>
+
+
+
 
     <script>
       function hideApiKey() {
@@ -89,6 +100,8 @@
         document.getElementById("result").innerHTML = responseJson["choices"][0]["text"];
       }
     </script>
+	
+	
   </body>
 </html>
 
