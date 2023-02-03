@@ -1,12 +1,12 @@
 <html>
   <head>
     <style>
-      /* Add some basic styling */
       body {
         font-family: Arial, sans-serif;
 		background-color: #333;
 		color: #fff;
 		padding: 20px;
+		width: 90%;
       }
 
       h1 {
@@ -16,42 +16,54 @@
 
       .container {
         background-color: #555;
-		padding: 20px;
-		border-radius: 10px;
-		box-shadow: 0 0 10px #333;
+		padding: 40px;
+		border-radius: 15px;
+		box-shadow: 0 0 15px #333;
 		position: relative;
+		width: 100%;
       }
 
-      /* Add some styling for the prompt and result sections */
-      .prompt, .result {
+      .prompt {
         background-color: #555
 		border: 1px solid #333;
+		border-radius: 15px;
 		color: #fff;
 		box-shadow: 2px 2px 4px #333;
       }
 
-      /* Style the result section */
       .result {
         background-color: #555;
 		border: 1px solid #333;
+		border-radius: 15px;
 		color: #fff;
+		box-shadow: 2px 2px 4px #333;
+      }
+	  
+	  .buttonClicks {
+        background-color: white;
+		border: 1px solid #333;
+		border-radius: 15px;
+		color: black;
 		box-shadow: 2px 2px 4px #333;
       }
 	 
 	 input[type="apitxtbox"] {
 		background-color: #555;
 		border: 1px solid #333;
+		border-radius: 15px;
 		color: #fff;
 		box-shadow: 2px 2px 4px #333;
 	}
 
-	  input[type="promtptxtbox"] {
+	input[type="promtptxtbox"] {
 		background-color: #555;
 		border: 1px solid #333;
+		border-radius: 15px;
 		color: #fff;
 		box-shadow: 2px 2px 4px #333;
 		width: 91%;
 	}
+
     </style>
   </head>
   
@@ -60,11 +72,11 @@
     <h1>Chat With AI</h1>
     <div class="container">
       <p id="apiKeyText">API Key:</p>
-      <input type="apitxtbox" id="apiKey">
-      <button id="confirmBtn" onclick="hideApiKey()">Confirm</button>
+      <input type="apitxtbox" id="apiKey" value="">
+      <button id="confirmBtn" onclick="processApiKey()" class="buttonClicks" onmouseover="this.style.cursor='hand';">Confirm</button>
       <p>Prompt:</p>
       <input type="promtptxtbox" class="prompt" id="prompt">&nbsp;&nbsp;
-      <button onclick="makeRequest()">Get Response</button>
+      <button onclick="makeRequest()" class="buttonClicks" onmouseover="this.style.cursor='hand';">Get Response</button>
       <p class="result" id="result"></p>
     </div>
 
@@ -72,33 +84,51 @@
 
 
     <script>
-      function hideApiKey() {
-        document.getElementById("apiKeyText").style.display = "none";
-        document.getElementById("apiKey").style.display = "none";
-        document.getElementById("confirmBtn").style.display = "none";
-      }
+	function processApiKey() {
+		// API Key provided by user in the input text box
+		var apiKey = document.getElementById("apiKey").value;
+		if (!apiKey == ""){
+			alert("API Key Loaded.\n\nClick OK to continue.");
+			document.getElementById("apiKey").value = "";
+		} else {
+			alert("No API Key provided to be loaded.\n\nClick OK to continue.");
+		}
+		//document.getElementById("apiKeyText").style.display = "none";
+		//document.getElementById("apiKey").style.display = "none";
+		//document.getElementById("confirmBtn").style.display = "none";
+	}
 
-      async function makeRequest() {
-        var apiKey = document.getElementById("apiKey").value;
-        var prompt = document.getElementById("prompt").value;
-        var response = await fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + apiKey
-          },
-          body: JSON.stringify({
-            prompt: prompt + ":",
-            max_tokens: 2000,
-            temperature: 0.7,
-            top_p: 1.0,
-            frequency_penalty: 0.0,
-            presence_penalty: 0.0
-          })
-        });
-        var responseJson = await response.json();
-        document.getElementById("result").innerHTML = responseJson["choices"][0]["text"];
-      }
+	// Make request to chatGPT for the answer to user prompt
+	async function makeRequest() {
+		var apiKey = document.getElementById("apiKey").value;
+		
+		// API Key provided by user in the input text box
+		if (!apiKey == ""){
+			var prompt = document.getElementById("prompt").value;
+			var response = await fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": "Bearer " + apiKey
+				},
+			
+				body: JSON.stringify({
+					prompt: prompt + ":",
+					max_tokens: 2000,
+					temperature: 0.7,
+					top_p: 1.0,
+					frequency_penalty: 0.0,
+					presence_penalty: 0.0
+				})
+			});
+
+			var responseJson = await response.json();
+			document.getElementById("result").innerHTML = responseJson["choices"][0]["text"];
+		// No API Key provided, alert to user that one must be entered
+		} else {
+			alert("You must first load the API Key or have entered it into the API Key field.\n\nClick OK to continue...");
+		}
+	}
     </script>
 	
 	
