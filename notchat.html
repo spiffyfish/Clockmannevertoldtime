@@ -83,10 +83,12 @@
 
 
 
-    <script>
+    <script defer>
+	
+    var apiKey = ""
 	function processApiKey() {
 		// API Key provided by user in the input text box
-		var apiKey = document.getElementById("apiKey").value;
+		apiKey = document.getElementById("apiKey").value;
 		if (!apiKey == ""){
 			alert("API Key Loaded.\n\nClick OK to continue.");
 			document.getElementById("apiKey").value = "";
@@ -100,11 +102,10 @@
 
 	// Make request to chatGPT for the answer to user prompt
 	async function makeRequest() {
-		var apiKey = document.getElementById("apiKey").value;
-		
 		// API Key provided by user in the input text box
 		if (!apiKey == ""){
 			var prompt = document.getElementById("prompt").value;
+			document.getElementById("result").innerHTML = "Generating a response..."
 			var response = await fetch("https://api.openai.com/v1/engines/text-davinci-003/completions", {
 				method: "POST",
 				headers: {
